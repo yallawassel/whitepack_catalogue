@@ -1,293 +1,232 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>WhitePack — Professional Catalogue</title>
-<link rel="preconnect" href="https://wa.me">
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>WhitePack Admin Panel (Always Export)</title>
 <style>
-:root{
- --bg:#f4f7f6;
- --accent:#2e7d32;
- --accent2:#66bb6a;
- --dark:#1b5e20;
+body{
+  font-family: Arial, sans-serif;
+  background:#f5fff8;
+  color:#213;
+  margin:0;
+  padding:20px;
 }
-*{box-sizing:border-box}
-body{margin:0;font-family:Inter,system-ui;background:var(--bg)}
-
-header{
- background:linear-gradient(90deg,#a5d6a7,#2e7d32);
- padding:16px;
- display:flex;
- align-items:center;
- gap:14px;
- flex-wrap:wrap;
- position:sticky;
- top:0;
- z-index:100;
-}
-.logo{
- width:54px;height:44px;
- background:var(--dark);
- border-radius:10px;
- display:flex;
- align-items:center;
- justify-content:center;
- color:#fff;font-weight:700;
-}
-.topbar{margin-left:auto;font-size:13px}
-
-.container{padding:24px}
-
-.section-title{font-size:22px;margin-bottom:12px;font-weight:700}
-
-.grid{
- display:grid;
- grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
- gap:20px;
-}
-
+h1{color:#2e7d32;}
 .card{
- background:#fff;
- border-radius:16px;
- padding:12px;
- box-shadow:0 8px 22px rgba(0,0,0,.08);
- display:flex;
- flex-direction:column;
- gap:8px;
+  background:#fff;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+  margin-bottom:20px;
 }
-
-.card img{
- width:100%;
- height:180px;
- object-fit:cover;
- border-radius:12px;
+label{font-weight:bold;}
+input,button{
+  padding:8px;
+  border-radius:6px;
+  border:1px solid #ccc;
+  font-size:14px;
 }
-
-.price{font-weight:700;color:var(--accent)}
-
-.qty-row{display:flex;gap:8px;align-items:center}
-
-.qty-box{display:flex;gap:4px}
-
-.qty-box button{
- width:26px;height:28px;border:none;
- background:#e2e8f0;border-radius:6px;cursor:pointer
+input{width:100%;margin-top:4px;margin-bottom:12px;}
+button{
+  background:linear-gradient(90deg,#6ecf6e,#3b7a3a);
+  color:#fff;
+  border:none;
+  padding:10px 14px;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
 }
-
-.qty-box input{
- width:45px;text-align:center;
- border:1px solid #ddd;border-radius:6px
+button:hover{opacity:.9;}
+.note{
+  background:#e8f5e9;
+  padding:10px;
+  border-left:4px solid #43a047;
+  border-radius:8px;
+  font-size:13px;
 }
-
-.add-btn{
- flex:1;
- background:linear-gradient(90deg,var(--accent2),var(--accent));
- border:none;color:#fff;padding:6px;border-radius:8px;
- cursor:pointer
-}
-
-/* CART PANEL */
-.cart{
- position:fixed;
- right:20px;
- bottom:20px;
- width:340px;
- background:#fff;
- border-radius:18px;
- box-shadow:0 15px 35px rgba(0,0,0,.2);
- padding:16px;
- z-index:999;
- display:flex;
- flex-direction:column;
- gap:10px;
-}
-
-.cart h3{
- margin:0;
-}
-
-.cart-items{
- max-height:200px;
- overflow:auto;
- font-size:14px;
-}
-
-.cart-item{
- display:flex;
- justify-content:space-between;
- margin-bottom:6px;
-}
-
-.cart-total{
- font-weight:700;
- font-size:16px;
- margin-top:8px;
-}
-
-.whatsapp-btn{
- background:#25D366;
- color:#fff;
- border:none;
- padding:10px;
- border-radius:10px;
- cursor:pointer;
- font-weight:600;
-}
-
-.footer{
- margin-top:30px;
- text-align:center;
- padding:16px;
- background:#e8f5e9;
+textarea{
+  width:100%;
+  height:220px;
+  font-family:monospace;
+  font-size:13px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  padding:10px;
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
-<header>
- <div class="logo">WP</div>
- <div>
-   <h2>White Pack</h2>
-   <div>Professional Packaging</div>
- </div>
- <div class="topbar">
-   WhatsApp: <a href="https://wa.me/96170333029" target="_blank">+961 70 333 029</a>
- </div>
-</header>
+<h1>📦 WhitePack Admin Panel — Always Export</h1>
 
-<main class="container">
- <div class="section-title">Products</div>
- <div id="grid" class="grid"></div>
-</main>
+<div class="card">
+  <h3>Step 1️⃣ — Upload Excel file</h3>
+  <input type="file" id="excelFile" accept=".xlsx,.xls" />
+  <div class="note">Headers required: <b>SKU, Name, Name_ar, Category, Category_ar, Description, Description_ar, Price, Quantity, Image, WhatsApp</b></div>
+</div>
 
-<!-- CART -->
-<div class="cart">
- <h3>Your Order</h3>
- <div id="cartItems" class="cart-items"></div>
- <div id="cartTotal" class="cart-total">Total: 0 USD</div>
- <button class="whatsapp-btn" onclick="sendWhatsApp()">Send via WhatsApp</button>
+<div class="card">
+  <h3>Step 2️⃣ — Settings</h3>
+  <label>💵 USD → LBP Rate:</label>
+  <input type="number" id="rateInput" value="90000" step="100" />
+  <label>📱 WhatsApp Number:</label>
+  <input type="text" id="waInput" value="96170333029" />
+  <button onclick="saveSettings()">Save Settings</button>
+  <div class="note">Saved locally — used when you export.</div>
+</div>
+
+<div class="card">
+  <h3>Step 3️⃣ — Export JSON</h3>
+  <button onclick="exportJSON()">Export products.json</button>
+  <div class="note">If the file doesn’t auto-download, it will open in a new tab so you can <b>Ctrl+S → Save As products.json</b>.</div>
+</div>
+
+<div class="card">
+  <h3>📄 Preview JSON</h3>
+  <textarea id="jsonOutput" readonly></textarea>
 </div>
 
 <script>
-const DATA_URL="products.json";
-const RATE_KEY="internal_catalogue_usd_to_lbp";
-let products=[];
-let cart=[];
-
-async function loadData(){
- const res=await fetch(DATA_URL+"?t="+Date.now());
- products=await res.json();
- render();
+function saveSettings(){
+  localStorage.setItem('internal_catalogue_usd_to_lbp',document.getElementById('rateInput').value);
+  localStorage.setItem('whitepack_whatsapp_number',document.getElementById('waInput').value);
+  alert('✅ Settings saved');
 }
 
-function getRate(){
- return Number(localStorage.getItem(RATE_KEY)||90000);
+let excelData=[];
+document.getElementById('excelFile').addEventListener('change',handleExcel,false);
+function handleExcel(evt){
+  const file=evt.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const data=new Uint8Array(e.target.result);
+    const workbook=XLSX.read(data,{type:'array'});
+    const sheet=workbook.Sheets[workbook.SheetNames[0]];
+    excelData=XLSX.utils.sheet_to_json(sheet,{defval:""});
+    alert('✅ Excel loaded — Rows: '+excelData.length);
+  };
+  reader.readAsArrayBuffer(file);
 }
 
-function render(){
- const grid=document.getElementById("grid");
- grid.innerHTML="";
- const rate=getRate();
+function exportJSON(){
+  if(!excelData.length){alert('Upload an Excel file first!');return;}
 
- products.forEach((p,i)=>{
-  const img=p.image
-   ?`assets/images/products/${p.image}`
-   :"assets/images/placeholder.jpg";
+  const mapped=excelData.map(row=>{
+    const normalize=k=>k?k.trim().toLowerCase():"";
+    const keys=Object.keys(row).reduce((a,k)=>{a[normalize(k)]=k;return a;},{});
+    const num=v=>isNaN(parseFloat(v))?0:parseFloat(v);
+    const int=v=>isNaN(parseInt(v))?0:parseInt(v);
+    return{
+      sku:row[keys["sku"]]||"",
+      name:row[keys["name"]]||"",
+      name_ar:row[keys["name_ar"]]||"",
+      category:row[keys["category"]]||"",
+      category_ar:row[keys["category_ar"]]||"",
+      description:row[keys["description"]]||"",
+      description_ar:row[keys["description_ar"]]||"",
+      price:num(row[keys["price"]]||row[keys["price usd"]]||row[keys["priceusd"]]||row[keys["prix"]]),
+      quantity:int(row[keys["quantity"]]||row[keys["qty"]]||row[keys["qte"]]),
+      image:row[keys["image"]]||"",
+      whatsapp:row[keys["whatsapp"]]||""
+    };
+  });
 
-  const card=document.createElement("div");
-  card.className="card";
-  card.innerHTML=`
-   <img src="${img}">
-   <h4>${p.name}</h4>
-   <div class="price">
-    ${p.price} USD
-    <small>${Math.round(p.price*rate).toLocaleString()} LBP</small>
-   </div>
-   <div class="qty-row">
-    <div class="qty-box">
-     <button onclick="changeQty(${i},-1)">-</button>
-     <input id="qty-${i}" type="number" value="1" min="1">
-     <button onclick="changeQty(${i},1)">+</button>
-    </div>
-    <button class="add-btn" onclick="addToCart(${i})">
-     Add
-    </button>
-   </div>`;
-  grid.appendChild(card);
- });
+  const json=JSON.stringify(mapped,null,2);
+  document.getElementById('jsonOutput').value=json;
+
+  try{
+    const blob=new Blob([json],{type:"application/json"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download="products.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    alert('✅ Download started');
+  }catch(e){
+    const newTab=window.open();
+    newTab.document.write('<pre>'+json.replace(/</g,"&lt;")+'</pre>');
+  }
 }
-
-function changeQty(i,d){
- const inp=document.getElementById("qty-"+i);
- let v=parseInt(inp.value)||1;
- v+=d;if(v<1)v=1;
- inp.value=v;
-}
-
-function addToCart(i){
- const qty=parseInt(document.getElementById("qty-"+i).value)||1;
- const product=products[i];
-
- const existing=cart.find(c=>c.id===i);
- if(existing){
-  existing.qty+=qty;
- }else{
-  cart.push({id:i,name:product.name,price:product.price,qty});
- }
-
- updateCart();
-}
-
-function updateCart(){
- const cartItems=document.getElementById("cartItems");
- const cartTotal=document.getElementById("cartTotal");
- const rate=getRate();
- cartItems.innerHTML="";
- let total=0;
-
- cart.forEach((item,index)=>{
-  const subtotal=item.price*item.qty;
-  total+=subtotal;
-  cartItems.innerHTML+=`
-   <div class="cart-item">
-    <span>${item.name} x${item.qty}</span>
-    <span>${subtotal} USD</span>
-   </div>`;
- });
-
- cartTotal.innerHTML=
-  `Total: ${total.toFixed(2)} USD
-   <br><small>${Math.round(total*rate).toLocaleString()} LBP</small>`;
-}
-
-function sendWhatsApp(){
- if(cart.length===0){
-  alert("Cart is empty");
-  return;
- }
-
- let message="Hello White Pack,%0A%0AI would like to order:%0A";
- let total=0;
-
- cart.forEach(item=>{
-  const subtotal=item.price*item.qty;
-  total+=subtotal;
-  message+=`- ${item.name} x${item.qty} = ${subtotal} USD%0A`;
- });
-
- message+=`%0ATotal: ${total.toFixed(2)} USD`;
-
- window.open(`https://wa.me/96170333029?text=${message}`,"_blank");
-}
-
-loadData();
 </script>
-
-<div class="footer">
- <strong>White Pack</strong> — Premium Packaging Solutions
+<div class="card">
+  <h3>🖼 Manage Categories</h3>
+  <label>Category Name:</label>
+  <input type="text" id="catName">
+  <label>Image File Name (example: cups.jpg):</label>
+  <input type="text" id="catImage">
+  <button onclick="addCategory()">Add Category</button>
+  <button onclick="exportCategories()">Export categories.json</button>
+  <textarea id="catOutput" style="height:180px"></textarea>
 </div>
 
+<script>
+let categoryData=[];
+
+function addCategory(){
+ const name=document.getElementById("catName").value.trim();
+ const image=document.getElementById("catImage").value.trim();
+ if(!name)return alert("Enter category name");
+ categoryData.push({name,image});
+ document.getElementById("catOutput").value=
+ JSON.stringify(categoryData,null,2);
+}
+
+function exportCategories(){
+ const json=JSON.stringify(categoryData,null,2);
+ const blob=new Blob([json],{type:"application/json"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="categories.json";
+ document.body.appendChild(a);
+ a.click();
+ document.body.removeChild(a);
+ URL.revokeObjectURL(url);
+ alert("categories.json downloaded");
+}
+</script>
+<div class="card">
+  <h3>🖼 Manage Categories</h3>
+  <label>Category Name:</label>
+  <input type="text" id="catName">
+  <label>Image File Name (example: cups.jpg):</label>
+  <input type="text" id="catImage">
+  <button onclick="addCategory()">Add Category</button>
+  <button onclick="exportCategories()">Export categories.json</button>
+  <textarea id="catOutput" style="height:180px"></textarea>
+</div>
+
+<script>
+let categoryData=[];
+
+function addCategory(){
+ const name=document.getElementById("catName").value.trim();
+ const image=document.getElementById("catImage").value.trim();
+ if(!name)return alert("Enter category name");
+ categoryData.push({name,image});
+ document.getElementById("catOutput").value=
+ JSON.stringify(categoryData,null,2);
+}
+
+function exportCategories(){
+ const json=JSON.stringify(categoryData,null,2);
+ const blob=new Blob([json],{type:"application/json"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="categories.json";
+ document.body.appendChild(a);
+ a.click();
+ document.body.removeChild(a);
+ URL.revokeObjectURL(url);
+ alert("categories.json downloaded");
+}
+</script>
 </body>
 </html>

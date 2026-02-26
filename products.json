@@ -102,5 +102,18 @@
     "quantity": 200,
     "image": "kitchenroll-3kg.jpg",
     "whatsapp": ""
+  },
+  {
+    "sku": "",
+    "name": "Somo Plastic Rectangular Hinged Lid",
+    "name_ar": "",
+    "category": "Containers",
+    "category_ar": "",
+    "description": "",
+    "description_ar": "",
+    "price": 0,
+    "quantity": 0,
+    "image": "rectangular_containers.jpg",
+    "whatsapp": ""
   }
 ]

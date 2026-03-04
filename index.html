@@ -3,258 +3,316 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>WhitePack — Professional Catalogue</title>
-<link rel="preconnect" href="https://wa.me">
+<title>WhitePack Catalogue</title>
+
 <style>
+
 :root{
- --bg:#f4f7f6;
- --accent:#2e7d32;
- --accent2:#66bb6a;
- --dark:#1b5e20;
+ --green:#2e7d32;
+ --green2:#66bb6a;
+ --bg:#f5f7f6;
 }
-*{box-sizing:border-box}
-body{margin:0;font-family:Inter,system-ui;background:var(--bg)}
+
+body{
+ margin:0;
+ font-family:Arial;
+ background:var(--bg);
+}
+
 header{
  background:linear-gradient(90deg,#a5d6a7,#2e7d32);
- padding:16px;
+ padding:15px;
  display:flex;
  align-items:center;
- gap:14px;
- flex-wrap:wrap;
- position:sticky;
- top:0;
- z-index:100;
 }
-.logo{
- width:54px;height:44px;
- background:var(--dark);
- border-radius:10px;
- display:flex;
- align-items:center;
- justify-content:center;
- color:#fff;font-weight:700;
+
+header h2{
+ margin:0;
 }
-.topbar{margin-left:auto;font-size:13px}
-.container{padding:24px}
-.section-title{font-size:22px;margin-bottom:12px;font-weight:700}
-.category-grid{
- display:grid;
- grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
- gap:18px;
- margin-bottom:30px;
+
+.container{
+ padding:25px;
 }
-.category-card{
- position:relative;
- height:200px;
- border-radius:18px;
- overflow:hidden;
- cursor:pointer;
- box-shadow:0 10px 25px rgba(0,0,0,.08);
- transition:.3s;
-}
-.category-card:hover{transform:translateY(-6px)}
-.category-card img{
- width:100%;
- height:100%;
- object-fit:cover;
-}
-.category-overlay{
- position:absolute;
- inset:0;
- background:linear-gradient(to top,rgba(0,0,0,.65),rgba(0,0,0,.2));
- display:flex;
- align-items:flex-end;
- padding:14px;
- color:#fff;font-weight:600;
-}
-.controls{display:flex;gap:12px;margin-bottom:20px}
-#search,#filterCat{
- padding:10px;border-radius:10px;border:1px solid #ddd
-}
+
 .grid{
  display:grid;
  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
  gap:20px;
 }
+
 .card{
- background:#fff;
- border-radius:16px;
+ background:white;
+ border-radius:14px;
  padding:12px;
- box-shadow:0 8px 22px rgba(0,0,0,.08);
+ box-shadow:0 8px 20px rgba(0,0,0,.08);
  display:flex;
  flex-direction:column;
- gap:8px;
 }
+
 .card img{
  width:100%;
  height:180px;
  object-fit:cover;
- border-radius:12px;
+ border-radius:10px;
 }
-.price{font-weight:700;color:var(--accent)}
-.qty-row{display:flex;gap:8px;align-items:center}
-.qty-box{display:flex;gap:4px}
-.qty-box button{
- width:26px;height:28px;border:none;
- background:#e2e8f0;border-radius:6px;cursor:pointer
+
+.price{
+ font-weight:bold;
+ color:var(--green);
 }
-.qty-box input{
- width:45px;text-align:center;
- border:1px solid #ddd;border-radius:6px
+
+.qty{
+ display:flex;
+ gap:6px;
+ margin-top:6px;
 }
-.add-btn{
- flex:1;
- background:linear-gradient(90deg,var(--accent2),var(--accent));
- border:none;color:#fff;padding:6px;border-radius:8px;
- cursor:pointer
-}
-.out-stock{color:#b91c1c;font-weight:600;font-size:13px}
-.footer{
- margin-top:30px;
+
+.qty input{
+ width:45px;
  text-align:center;
- padding:16px;
- background:#e8f5e9;
 }
+
+button{
+ border:none;
+ cursor:pointer;
+}
+
+.add{
+ background:linear-gradient(90deg,var(--green2),var(--green));
+ color:white;
+ padding:6px;
+ border-radius:8px;
+}
+
+.cartBtn{
+ position:fixed;
+ bottom:20px;
+ right:20px;
+ background:#25D366;
+ color:white;
+ padding:14px 18px;
+ border-radius:50px;
+ font-size:16px;
+ box-shadow:0 8px 20px rgba(0,0,0,.2);
+}
+
+.cartPanel{
+ position:fixed;
+ right:-400px;
+ top:0;
+ width:320px;
+ height:100%;
+ background:white;
+ box-shadow:-4px 0 20px rgba(0,0,0,.2);
+ padding:20px;
+ transition:.3s;
+ overflow:auto;
+}
+
+.cartPanel.open{
+ right:0;
+}
+
+.cartItem{
+ border-bottom:1px solid #eee;
+ padding:8px 0;
+ display:flex;
+ justify-content:space-between;
+}
+
+.remove{
+ color:red;
+ cursor:pointer;
+}
+
+.orderBtn{
+ width:100%;
+ background:#25D366;
+ color:white;
+ padding:12px;
+ border-radius:10px;
+ margin-top:10px;
+}
+
 </style>
 </head>
+
 <body>
 
 <header>
- <div class="logo">WP</div>
- <div>
-   <h2>White Pack</h2>
-   <div>Professional Packaging</div>
- </div>
- <div class="topbar">
-   WhatsApp: <a href="https://wa.me/96170333029" target="_blank">+961 70 333 029</a>
- </div>
+<h2>White Pack</h2>
 </header>
 
-<main class="container">
-
-<section>
- <div class="section-title">Shop by Category</div>
- <div id="categoryGrid" class="category-grid"></div>
-</section>
-
-<div class="controls">
- <input id="search" placeholder="Search products...">
- <select id="filterCat">
-   <option value="">All categories</option>
- </select>
-</div>
-
+<div class="container">
 <div id="grid" class="grid"></div>
-
-<div class="footer">
- <strong>White Pack</strong> — Premium Packaging Solutions
 </div>
 
-</main>
+<button class="cartBtn" onclick="toggleCart()">
+🛒 Cart (<span id="cartCount">0</span>)
+</button>
+
+<div id="cartPanel" class="cartPanel">
+
+<h3>Your Order</h3>
+
+<div id="cartItems"></div>
+
+<h3>Total: <span id="cartTotal">0</span> USD</h3>
+
+<button class="orderBtn" onclick="sendOrder()">
+Send Order on WhatsApp
+</button>
+
+</div>
 
 <script>
-const DATA_URL="products.json";
-const CATEGORY_URL="categories.json";
-const RATE_KEY="internal_catalogue_usd_to_lbp";
-let products=[],categories=[];
 
-async function loadData(){
- const [p,c]=await Promise.all([
-  fetch(DATA_URL+"?t="+Date.now()),
-  fetch(CATEGORY_URL+"?t="+Date.now())
- ]);
- products=await p.json();
- categories=await c.json();
- buildCategories();
- buildCategoryImages();
- render();
+const DATA_URL="products.json"
+
+let products=[]
+let cart=[]
+
+async function loadProducts(){
+
+const r=await fetch(DATA_URL+"?t="+Date.now())
+products=await r.json()
+
+renderProducts()
+
 }
 
-function getRate(){
- return Number(localStorage.getItem(RATE_KEY)||90000);
-}
+function renderProducts(){
 
-function buildCategories(){
- const sel=document.getElementById("filterCat");
- const cats=[...new Set(products.map(p=>p.category).filter(Boolean))];
- sel.innerHTML='<option value="">All categories</option>'+
- cats.map(c=>`<option value="${c}">${c}</option>`).join("");
-}
+const grid=document.getElementById("grid")
+grid.innerHTML=""
 
-function buildCategoryImages(){
- const grid=document.getElementById("categoryGrid");
- grid.innerHTML="";
- categories.forEach(cat=>{
-  const img=cat.image
-   ?`assets/images/categories/${cat.image}`
-   :"assets/images/placeholder.jpg";
-  const div=document.createElement("div");
-  div.className="category-card";
-  div.innerHTML=`
-   <img src="${img}">
-   <div class="category-overlay">${cat.name}</div>`;
-  div.onclick=()=>{
-   document.getElementById("filterCat").value=cat.name;
-   render();
-  };
-  grid.appendChild(div);
- });
-}
+products.forEach((p,i)=>{
 
-function render(){
- const grid=document.getElementById("grid");
- const q=document.getElementById("search").value.toLowerCase();
- const cat=document.getElementById("filterCat").value;
- const rate=getRate();
- grid.innerHTML="";
- products.filter(p=>{
-  const s=!q||p.name.toLowerCase().includes(q);
-  const c=!cat||p.category===cat;
-  return s&&c;
- }).forEach((p,i)=>{
-  const img=p.image
-   ?`assets/images/products/${p.image}`
-   :"assets/images/placeholder.jpg";
-  const inStock=(p.quantity||0)>0;
-  const card=document.createElement("div");
-  card.className="card";
-  card.innerHTML=`
-   <img src="${img}">
-   <h4>${p.name}</h4>
-   <div class="price">${p.price} USD
-    <small>${Math.round(p.price*rate).toLocaleString()} LBP</small>
-   </div>
-   ${!inStock?'<div class="out-stock">Out of stock</div>':''}
-   <div class="qty-row">
-    <div class="qty-box">
-     <button onclick="changeQty(${i},-1)">-</button>
-     <input id="qty-${i}" type="number" value="1" min="1">
-     <button onclick="changeQty(${i},1)">+</button>
-    </div>
-    <button class="add-btn"
-     onclick="addToCart(${i})"
-     ${!inStock?'disabled':''}>
-     Add
-    </button>
-   </div>`;
-  grid.appendChild(card);
- });
-}
+const img=p.image
+?`assets/images/products/${p.image}`
+:"assets/images/placeholder.jpg"
 
-function changeQty(i,d){
- const inp=document.getElementById("qty-"+i);
- let v=parseInt(inp.value)||1;
- v+=d;if(v<1)v=1;
- inp.value=v;
+const card=document.createElement("div")
+card.className="card"
+
+card.innerHTML=`
+
+<img src="${img}">
+
+<h4>${p.name}</h4>
+
+<div class="price">${p.price} USD</div>
+
+<div class="qty">
+<input id="qty-${i}" type="number" value="1" min="1">
+<button class="add" onclick="addToCart(${i})">
+Add
+</button>
+</div>
+
+`
+
+grid.appendChild(card)
+
+})
+
 }
 
 function addToCart(i){
- alert("Added to cart (WhatsApp system active in full version)");
+
+const qty=parseInt(document.getElementById("qty-"+i).value)||1
+const p=products[i]
+
+cart.push({
+name:p.name,
+qty:qty,
+price:p.price
+})
+
+updateCart()
+
 }
 
-document.getElementById("search").addEventListener("input",render);
-document.getElementById("filterCat").addEventListener("change",render);
-loadData();
+function updateCart(){
+
+const items=document.getElementById("cartItems")
+const count=document.getElementById("cartCount")
+const totalEl=document.getElementById("cartTotal")
+
+items.innerHTML=""
+
+let total=0
+
+cart.forEach((item,index)=>{
+
+const line=item.qty*item.price
+total+=line
+
+const div=document.createElement("div")
+div.className="cartItem"
+
+div.innerHTML=`
+${item.qty} x ${item.name}
+<span>
+${line}$
+ <span class="remove" onclick="removeItem(${index})">✕</span>
+</span>
+`
+
+items.appendChild(div)
+
+})
+
+count.innerText=cart.length
+totalEl.innerText=total
+
+}
+
+function removeItem(i){
+
+cart.splice(i,1)
+updateCart()
+
+}
+
+function toggleCart(){
+
+document.getElementById("cartPanel").classList.toggle("open")
+
+}
+
+function sendOrder(){
+
+if(cart.length===0){
+
+alert("Cart is empty")
+return
+
+}
+
+let message="New Order:%0A%0A"
+let total=0
+
+cart.forEach(item=>{
+
+const line=item.qty*item.price
+total+=line
+
+message+=`${item.qty} x ${item.name} - ${line} USD%0A`
+
+})
+
+message+=`%0ATotal: ${total} USD`
+
+const phone="96170333029"
+
+window.open(`https://wa.me/${phone}?text=${message}`)
+
+}
+
+loadProducts()
+
 </script>
+
 </body>
 </html>

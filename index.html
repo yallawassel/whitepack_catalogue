@@ -59,11 +59,22 @@ color:white;
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-gap:20px;
+grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+gap:15px;
 margin-top:20px;
 }
 
+@media (max-width:600px){
+
+.grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+.categoryGrid{
+grid-template-columns:repeat(2,1fr);
+}
+
+}
 .card{
 background:white;
 padding:10px;
@@ -115,7 +126,10 @@ right:0;
 color:red;
 cursor:pointer;
 }
-
+body[style*="rtl"] .cartBtn{
+right:auto;
+left:20px;
+}
 </style>
 
 </head>
@@ -126,7 +140,7 @@ cursor:pointer;
 
 <h2>White Pack</h2>
 
-<button onclick="toggleLang()">AR / EN</button>
+<button id="langBtn" onclick="toggleLang()">AR</button>
 
 </header>
 
@@ -217,7 +231,7 @@ div.className="category"
 
 div.innerHTML=`
 <img src="assets/images/categories/${cat.image}">
-<span>${cat.name}</span>
+<span>${lang==="ar" ? cat.name_ar || cat.name : cat.name}</span>
 `
 
 div.onclick=()=>{
@@ -281,7 +295,13 @@ function addToCart(i){
 const qty=parseInt(document.getElementById("qty-"+i).value)||1
 const p=products[i]
 
-cart.push({name:p.name,qty:qty,price:p.price})
+const name = lang==="ar" ? p.name_ar || p.name : p.name
+
+cart.push({
+ name:name,
+ qty:qty,
+ price:p.price
+})
 
 updateCart()
 
@@ -349,11 +369,20 @@ window.open(`https://wa.me/96170333029?text=${msg}`)
 
 function toggleLang(){
 
-lang=lang==="en"?"ar":"en"
-renderProducts()
-
+if(lang==="en"){
+ lang="ar"
+ document.getElementById("langBtn").innerText="EN"
+ document.body.style.direction="rtl"
+}else{
+ lang="en"
+ document.getElementById("langBtn").innerText="AR"
+ document.body.style.direction="ltr"
 }
-function showAll(){
+
+renderProducts()
+renderCategories()
+
+}function showAll(){
  currentCategory=""
  renderProducts()
 }

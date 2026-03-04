@@ -6,5 +6,9 @@
   {
     "name": "CONTAINERS",
     "image": "clear_containers_lid.jpg"
+  },
+  {
+    "name": "CLEANER",
+    "image": "cleaner.jpg"
   }
 ]

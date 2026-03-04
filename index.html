@@ -512,7 +512,7 @@ const div=document.createElement("div")
 div.className="categoryCard"
 
 div.innerHTML=`
-<img src="assets/images/categories/${cat}.jpg">
+<img src="assets/images/categories/${cat.replace(/\s+/g,'-').toLowerCase()}.jpg">
 
 <div class="categoryOverlay">
 <div class="categoryTitle">${cat}</div>
@@ -598,17 +598,15 @@ if (p.image) {
   const card = document.createElement("div");
   card.className = "card";
  card.innerHTML = `
-  <div class="card-img">
-    <img src="${imagePath}"
+ <div class="card-img">
+<img src="${imagePath}"
+width="300"
+height="300"
 loading="lazy"
 decoding="async"
-     width="300"
-     height="300"
-     alt="${name}"
-     loading="lazy"
-     decoding="async"
-         onerror="this.onerror=null;this.src='assets/images/placeholder.jpg';">
-  </div>
+alt="${name}"
+onerror="this.onerror=null;this.src='assets/images/placeholder.jpg';">
+</div>
 
   <h3>${name}</h3>
   <p>${desc}</p>

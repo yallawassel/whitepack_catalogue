@@ -1,4 +1,5 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
 
@@ -9,17 +10,15 @@
 
 <style>
 
+*{box-sizing:border-box}
+
 body{
 margin:0;
 font-family:Arial;
 background:#f5f7f6;
-}
-*{
-box-sizing:border-box;
-}
-body{
 overflow-x:hidden;
 }
+
 header{
 background:#2e7d32;
 color:white;
@@ -28,110 +27,81 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 }
-header h2{
-font-size:20px;
-margin:0;
+
+header h2{margin:0;font-size:20px}
+
+.langBtn{
+background:white;
+border:none;
+padding:6px 12px;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold;
 }
 
 .container{
-padding:20px;
 max-width:1200px;
 margin:auto;
+padding:15px;
 }
+
 #search{
 width:100%;
 padding:10px;
+border-radius:8px;
+border:1px solid #ddd;
 margin-bottom:10px;
-box-sizing:border-box;
-}
-
-@media (max-width:600px){
-.container{
-padding:10px;
-}
-}
-.categoryGrid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-gap:20px;
-}
-
-.category{
-position:relative;
-cursor:pointer;
-border-radius:14px;
-overflow:hidden;
-}
-
-.category img{
-width:100%;
-height:140px;
-object-fit:contain;
-background:#fff;
-display:block;
-}
-.category span{
-position:absolute;
-bottom:0;
-left:0;
-right:0;
-padding:10px;
-background:rgba(0,0,0,.6);
-color:white;
-text-align:center;
 }
 
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
 gap:15px;
-margin-top:20px;
 }
 
-@media (max-width:600px){
-
-.grid{
-grid-template-columns:repeat(2,1fr);
+@media(max-width:600px){
+.grid{grid-template-columns:repeat(2,1fr)}
 }
 
-.categoryGrid{
-grid-template-columns:repeat(2,1fr);
-}
-
-}
 .card{
 background:white;
 padding:12px;
-border-radius:14px;
-box-shadow:0 6px 15px rgba(0,0,0,.08);
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
 text-align:center;
-transition:0.2s;
 }
 
-.card:hover{
-transform:translateY(-3px);
-box-shadow:0 10px 20px rgba(0,0,0,.12);
-}
 .card img{
 width:100%;
 height:160px;
 object-fit:contain;
-background:#fff;
-padding:8px;
-display:block;
+background:white;
 }
+
 .price{
 color:#2e7d32;
 font-weight:bold;
 }
-.card h4{
-font-size:14px;
-line-height:1.3;
-min-height:36px;
+
+.qtyRow{
+display:flex;
+justify-content:center;
+gap:5px;
+margin-top:6px;
 }
-body[style*="rtl"] .card h4{
-font-size:15px;
-font-weight:600;
+
+.qtyRow input{
+width:45px;
+text-align:center;
+}
+
+.addBtn{
+background:#2e7d32;
+color:white;
+border:none;
+padding:6px 10px;
+border-radius:6px;
+cursor:pointer;
 }
 
 .cartBtn{
@@ -141,49 +111,32 @@ right:20px;
 background:#25D366;
 color:white;
 padding:14px;
-border-radius:50px;
+border-radius:40px;
 cursor:pointer;
 }
 
-.cartPanel{
+.cartModal{
 position:fixed;
-right:-350px;
-top:0;
-width:320px;
-height:100%;
-background:white;
-box-shadow:-5px 0 20px rgba(0,0,0,.2);
-padding:20px;
-transition:.3s;
-overflow:auto;
+inset:0;
+background:rgba(0,0,0,.5);
+display:none;
+align-items:center;
+justify-content:center;
 }
 
-.cartPanel.open{
-right:0;
+.cartPanel{
+background:white;
+padding:15px;
+border-radius:10px;
+width:90%;
+max-width:450px;
 }
 
 .remove{
 color:red;
 cursor:pointer;
 }
-body[style*="rtl"] .cartBtn{
-right:auto;
-left:20px;
-}
-body[style*="rtl"]{
-text-align:right;
-}
-body[style*="rtl"] input{
-text-align:right;
-}
-body[style*="rtl"] .card{
-direction:rtl;
-}
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button{
--webkit-appearance:none;
-margin:0;
-}
+
 </style>
 
 </head>
@@ -191,119 +144,72 @@ margin:0;
 <body>
 
 <header>
-
 <h2>White Pack</h2>
-
-<button id="langBtn" onclick="toggleLang()">AR</button>
-
+<button class="langBtn" onclick="toggleLang()" id="langBtn">AR</button>
 </header>
 
 <div class="container">
 
 <input id="search" placeholder="Search products">
 
-<button onclick="showAll()" style="
-margin-top:10px;
-padding:6px 12px;
-background:#2e7d32;
-color:white;
-border:none;
-border-radius:6px;
-cursor:pointer;
-">
-Show All Products
-</button>
-
-<div id="categoryGrid" class="categoryGrid"></div>
-
-<div id="productGrid" class="grid"></div>
+<div id="grid" class="grid"></div>
 
 </div>
 
-<div class="cartBtn" onclick="toggleCart()">
-🛒 (<span id="cartCount">0</span>)
+<div class="cartBtn" onclick="openCart()">
+🛒 <span id="cartCount">0</span>
 </div>
 
-<div id="cartPanel" class="cartPanel">
-
-<button onclick="toggleCart()" style="
-position:absolute;
-top:10px;
-right:10px;
-background:#eee;
-border:none;
-padding:6px 10px;
-cursor:pointer;
-">
-✕
-</button>
+<div id="cartModal" class="cartModal">
+<div class="cartPanel">
 
 <h3>Order</h3>
 
 <div id="cartItems"></div>
 
+<input id="customerName" placeholder="Your name" style="width:100%;padding:8px;margin-top:10px">
+
 <h3>Total: <span id="cartTotal">0</span> USD</h3>
 
-<button onclick="sendOrder()">Send WhatsApp Order</button>
+<button onclick="clearCart()">Clear</button> <button onclick="sendOrder()">Send WhatsApp</button>
 
+</div>
 </div>
 
 <script>
 
 const DATA_URL="products.json"
-const CAT_URL="categories.json"
 
 let products=[]
-let categories=[]
-let cart=[]
+let cart=JSON.parse(localStorage.getItem("whitepack_cart"))||[]
 let lang="en"
-let currentCategory=""
 
 async function load(){
 
-const p=await fetch(DATA_URL)
-products=await p.json()
+const res=await fetch(DATA_URL)
+products=await res.json()
 
-const c=await fetch(CAT_URL)
-categories=await c.json()
+applyCategoryFromURL()
 
-renderCategories()
 renderProducts()
+updateCart()
 
 }
 
-function renderCategories(){
+function applyCategoryFromURL(){
 
-const grid=document.getElementById("categoryGrid")
+const params=new URLSearchParams(window.location.search)
+const cat=params.get("cat")
 
-grid.innerHTML=""
-
-categories.forEach(cat=>{
-
-const div=document.createElement("div")
-div.className="category"
-
-div.innerHTML=`
-<img src="assets/images/categories/${cat.image}">
-<span>${lang==="ar" ? cat.name_ar || cat.name : cat.name}</span>
-`
-
-div.onclick=()=>{
-
- currentCategory = cat.name
- renderProducts()
-
+if(cat){
+products=products.filter(p=>p.category===cat)
 }
-
-grid.appendChild(div)
-
-})
 
 }
 
 function renderProducts(){
 
-const grid=document.getElementById("productGrid")
+const grid=document.getElementById("grid")
 const q=document.getElementById("search").value.toLowerCase()
 
 grid.innerHTML=""
@@ -311,21 +217,17 @@ grid.innerHTML=""
 products
 .filter(p=>{
 
-const matchSearch=!q||p.name.toLowerCase().includes(q)
-
-const matchCat=!currentCategory || p.category===currentCategory
-
-return matchSearch && matchCat
+const name=lang==="ar"?p.name_ar||p.name:p.name
+return !q||name.toLowerCase().includes(q)
 
 })
 .forEach((p,i)=>{
 
 const name=lang==="ar"?p.name_ar||p.name:p.name
 
-const card=document.createElement("div")
-card.className="card"
+grid.innerHTML+=`
 
-card.innerHTML=`
+<div class="card">
 
 <img src="assets/images/products/${p.image}">
 
@@ -333,29 +235,29 @@ card.innerHTML=`
 
 <div class="price">${p.price} USD</div>
 
+<div class="qtyRow">
 <input id="qty-${i}" type="number" value="1" min="1">
+<button class="addBtn" onclick="addToCart(${i})">
+${lang==="ar"?"إضافة":"Add"}
+</button>
+</div>
 
-<button onclick="addToCart(${i})">Add</button>
+</div>
 
 `
-
-grid.appendChild(card)
 
 })
 
 }
+
 function addToCart(i){
 
 const qty=parseInt(document.getElementById("qty-"+i).value)||1
 const p=products[i]
 
-const name = lang==="ar" ? p.name_ar || p.name : p.name
+const name=lang==="ar"?p.name_ar||p.name:p.name
 
-cart.push({
- name:name,
- qty:qty,
- price:p.price
-})
+cart.push({name,qty,price:p.price})
 
 updateCart()
 
@@ -386,24 +288,31 @@ ${line}$
 document.getElementById("cartTotal").innerText=total
 document.getElementById("cartCount").innerText=cart.length
 
+localStorage.setItem("whitepack_cart",JSON.stringify(cart))
+
 }
 
 function removeItem(i){
-
 cart.splice(i,1)
 updateCart()
-
 }
 
-function toggleCart(){
+function clearCart(){
+cart=[]
+updateCart()
+}
 
-document.getElementById("cartPanel").classList.toggle("open")
-
+function openCart(){
+document.getElementById("cartModal").style.display="flex"
 }
 
 function sendOrder(){
 
-let msg="New Order:%0A%0A"
+let msg="New Order:%0A"
+
+const name=document.getElementById("customerName").value
+if(name) msg+=`Name: ${name}%0A%0A`
+
 let total=0
 
 cart.forEach(i=>{
@@ -424,21 +333,17 @@ window.open(`https://wa.me/96170333029?text=${msg}`)
 function toggleLang(){
 
 if(lang==="en"){
- lang="ar"
- document.getElementById("langBtn").innerText="EN"
- document.body.style.direction="rtl"
+lang="ar"
+document.body.style.direction="rtl"
+document.getElementById("langBtn").innerText="EN"
 }else{
- lang="en"
- document.getElementById("langBtn").innerText="AR"
- document.body.style.direction="ltr"
+lang="en"
+document.body.style.direction="ltr"
+document.getElementById("langBtn").innerText="AR"
 }
 
 renderProducts()
-renderCategories()
 
-}function showAll(){
- currentCategory=""
- renderProducts()
 }
 
 document.getElementById("search").addEventListener("input",renderProducts)

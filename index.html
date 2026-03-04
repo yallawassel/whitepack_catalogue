@@ -448,6 +448,8 @@ h1 { margin: 0; font-size: 20px; color: #1f401d; }
 <script>
 // CONFIG
 const DATA_URL = "products.json";
+const CATEGORY_URL = "categories.json";
+let categories = [];
 const RATE_KEY = "internal_catalogue_usd_to_lbp";
 const ADMIN_PW = "whitepack123";
 const CART_KEY = "whitepack_cart_v1";
@@ -467,6 +469,8 @@ async function loadProducts(){
   try{
     const res = await fetch(DATA_URL + "?t=" + Date.now());
     const data = await res.json();
+const catRes = await fetch(CATEGORY_URL + "?t=" + Date.now());
+categories = await catRes.json();
     products = Array.isArray(data) ? data : (data.products || []);
     setLastUpdated();
     buildCategories();
@@ -502,34 +506,31 @@ function renderCategories(){
 const grid=document.getElementById("categoryGrid")
 grid.innerHTML=""
 
-const cats=[...new Set(products.map(p=>p.category).filter(Boolean))]
+categories.forEach(cat=>{
 
-cats.forEach(cat=>{
-
-const count=products.filter(p=>p.category===cat).length
+const count=products.filter(p=>p.category===cat.name).length
 
 const div=document.createElement("div")
 div.className="categoryCard"
 
 div.innerHTML=`
-<img src="assets/images/categories/${cat.replace(/\s+/g,'-').toLowerCase()}.jpg">
+<img src="assets/images/categories/${cat.image}">
 
 <div class="categoryOverlay">
-<div class="categoryTitle">${cat}</div>
+<div class="categoryTitle">${cat.name}</div>
 <div class="categoryCount">${count} products</div>
 </div>
 `
 
 div.onclick=()=>{
-openCategory(cat)
+openCategory(cat.name)
 }
 
 grid.appendChild(div)
 
 })
 
-}
-function openCategory(cat){
+}function openCategory(cat){
 
 document.getElementById("categoryGrid").style.display="none"
 document.getElementById("backBtn").style.display="block"

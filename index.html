@@ -134,6 +134,18 @@ cursor:pointer;
 
 <input id="search" placeholder="Search products">
 
+<button onclick="showAll()" style="
+margin-top:10px;
+padding:6px 12px;
+background:#2e7d32;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+">
+Show All Products
+</button>
+
 <div id="categoryGrid" class="categoryGrid"></div>
 
 <div id="productGrid" class="grid"></div>
@@ -145,6 +157,18 @@ cursor:pointer;
 </div>
 
 <div id="cartPanel" class="cartPanel">
+
+<button onclick="toggleCart()" style="
+position:absolute;
+top:10px;
+right:10px;
+background:#eee;
+border:none;
+padding:6px 10px;
+cursor:pointer;
+">
+✕
+</button>
 
 <h3>Order</h3>
 
@@ -165,6 +189,7 @@ let products=[]
 let categories=[]
 let cart=[]
 let lang="en"
+let currentCategory=""
 
 async function load(){
 
@@ -197,8 +222,8 @@ div.innerHTML=`
 
 div.onclick=()=>{
 
-document.getElementById("search").value=cat.name
-renderProducts()
+ currentCategory = cat.name
+ renderProducts()
 
 }
 
@@ -215,11 +240,17 @@ const q=document.getElementById("search").value.toLowerCase()
 
 grid.innerHTML=""
 
-products.filter(p=>{
+products
+.filter(p=>{
 
-return !q||p.name.toLowerCase().includes(q)
+const matchSearch=!q||p.name.toLowerCase().includes(q)
 
-}).forEach((p,i)=>{
+const matchCat=!currentCategory || p.category===currentCategory
+
+return matchSearch && matchCat
+
+})
+.forEach((p,i)=>{
 
 const name=lang==="ar"?p.name_ar||p.name:p.name
 
@@ -245,7 +276,6 @@ grid.appendChild(card)
 })
 
 }
-
 function addToCart(i){
 
 const qty=parseInt(document.getElementById("qty-"+i).value)||1
@@ -322,6 +352,10 @@ function toggleLang(){
 lang=lang==="en"?"ar":"en"
 renderProducts()
 
+}
+function showAll(){
+ currentCategory=""
+ renderProducts()
 }
 
 document.getElementById("search").addEventListener("input",renderProducts)

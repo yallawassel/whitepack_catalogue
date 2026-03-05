@@ -1,14 +1,18 @@
 [
   {
+    "name": "FACIAL TISSUES",
+    "image": "facial-tissues.jpg"
+  },
+  {
     "name": "PAPER ROLLS",
     "image": "Paper-Rolls.jpg"
   },
   {
-    "name": "CONTAINERS",
-    "image": "clear_containers_lid.jpg"
-  },
-  {
     "name": "CLEANER",
     "image": "cleaner.jpg"
+  },
+  {
+    "name": "CONTAINERS",
+    "image": "clear_containers_lid.jpg"
   }
 ]

@@ -1,18 +1,22 @@
 [
   {
-    "name": "FACIAL TISSUES",
-    "image": "facial-tissues.jpg"
+    "name": "FOAM PRODUCTS",
+    "image": "foam-products.jpg"
   },
   {
-    "name": "PAPER ROLLS",
-    "image": "Paper-Rolls.jpg"
+    "name": "FACIAL&ROLLS TISSUES",
+    "image": "facial-rolls-tissues.jpg"
   },
   {
-    "name": "CLEANER",
-    "image": "cleaner.jpg"
+    "name": "CLEANING PRODUCTS",
+    "image": "cleaning-products.jpg"
   },
   {
     "name": "CONTAINERS",
     "image": "clear_containers_lid.jpg"
+  },
+  {
+    "name": "ALUMINIUM PRODUCTS",
+    "image": "aluminium-products.jpg"
   }
 ]

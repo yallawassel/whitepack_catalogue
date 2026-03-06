@@ -191,9 +191,15 @@ min-height:320px;
   max-width:100%;
   max-height:100%;
   object-fit:contain;
+  transition: transform .3s ease;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.15));
 }
 .card:hover .card-img img {
   transform: scale(1.05);   /* smooth zoom effect */
+}
+.card:hover{
+transform: translateY(-3px);
+box-shadow:0 8px 18px rgba(0,0,0,.15);
 }
 .card h3 { margin: 0; font-size: 15px; color: #2f5f2d; }
 .card p { margin: 0; color: #4f6a4b; font-size: 12.5px; min-height:34px; }

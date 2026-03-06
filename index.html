@@ -518,12 +518,14 @@ const count=products.filter(p=>p.category===cat.name).length
 const div=document.createElement("div")
 div.className="categoryCard"
 
+const catTitle = currentLang==="ar" ? (cat.name_ar || cat.name) : cat.name;
+
 div.innerHTML=`
 <img src="assets/images/categories/${cat.image}">
 
 <div class="categoryOverlay">
-<div class="categoryTitle">${cat.name}</div>
-<div class="categoryCount">${count} products</div>
+<div class="categoryTitle">${catTitle}</div>
+<div class="categoryCount">${count} ${currentLang==="ar" ? "منتج" : "products"}</div>
 </div>
 `
 
@@ -537,6 +539,11 @@ grid.appendChild(div)
 
 }function openCategory(cat){
 
+// update URL
+const url = new URL(window.location);
+url.searchParams.set("cat", cat);
+window.history.pushState({}, "", url);
+
 document.getElementById("categoryGrid").style.display="none"
 document.getElementById("backBtn").style.display="block"
 
@@ -548,6 +555,11 @@ render()
 
 function showCategories(){
 
+// remove category from URL
+const url = new URL(window.location);
+url.searchParams.delete("cat");
+window.history.pushState({}, "", url);
+
 document.getElementById("categoryGrid").style.display="grid"
 document.getElementById("backBtn").style.display="none"
 
@@ -556,7 +568,6 @@ document.getElementById("filterCat").value=""
 render()
 
 }
-
 function render(){
 if(document.getElementById("categoryGrid").style.display !== "none"){
 document.getElementById("grid").innerHTML=""
@@ -571,7 +582,7 @@ return
 
   const filtered = products.filter(p => {
     const name = (currentLang==="ar" ? p.name_ar : p.name) || "";
-    const category = (currentLang==="ar" ? p.category_ar : p.category) || "";
+    const category = p.category || "";
     const inSearch = !q || name.toLowerCase().includes(q) || (p.sku && p.sku.toLowerCase().includes(q));
     const inCat = !cat || category === cat;
     return inSearch && inCat;
@@ -855,9 +866,9 @@ document.getElementById("langToggle").addEventListener("click", () => {
   currentLang = currentLang === "en" ? "ar" : "en";
   applyLang();
   buildCategories();
+  renderCategories();
   render();
 });
-
 function applyLang(){
   const header = document.getElementById("topHeader");
   if(currentLang === "ar"){

@@ -1,9 +1,5 @@
 [
   {
-    "name": "FOAM PRODUCTS",
-    "image": "foam-products.jpg"
-  },
-  {
     "name": "FACIAL&ROLLS TISSUES",
     "image": "facial-rolls-tissues.jpg"
   },
@@ -18,5 +14,13 @@
   {
     "name": "ALUMINIUM PRODUCTS",
     "image": "aluminium-products.jpg"
+  },
+  {
+    "name": "FOAM PRODUCTS",
+    "image": "foam-products.jpg"
+  },
+  {
+    "name": "KRAFT PRODUCTS",
+    "image": "kraft-products.jpg"
   }
 ]

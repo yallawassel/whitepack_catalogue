@@ -385,8 +385,21 @@
     "description": "",
     "description_ar": "",
     "price": 0,
-    "quantity": 0,
+    "quantity": 200,
     "image": "foam-tray-small.jpg",
+    "whatsapp": ""
+  },
+  {
+    "sku": "",
+    "name": "Kraft Bag with rope",
+    "name_ar": "",
+    "category": "KRAFT PRODUCTS",
+    "category_ar": "كرافة",
+    "description": "",
+    "description_ar": "",
+    "price": 0,
+    "quantity": 200,
+    "image": "kraftbag-rope.jpg",
     "whatsapp": ""
   }
 ]

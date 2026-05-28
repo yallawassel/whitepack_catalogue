@@ -544,15 +544,21 @@ const url = new URL(window.location);
 url.searchParams.set("cat", cat);
 window.history.pushState({}, "", url);
 
-document.getElementById("categoryGrid").style.display="none"
-document.getElementById("backBtn").style.display="block"
+document.getElementById("categoryGrid").style.display="none";
+document.getElementById("backBtn").style.display="block";
 
-document.getElementById("filterCat").value=cat
+// FIX CATEGORY FILTER
+const selectedCategory = currentLang==="ar"
+  ? (
+      categories.find(c => c.name === cat)?.name_ar || cat
+    )
+  : cat;
 
-render()
+document.getElementById("filterCat").value = selectedCategory;
+
+render();
 
 }
-
 function showCategories(){
 
 // remove category from URL

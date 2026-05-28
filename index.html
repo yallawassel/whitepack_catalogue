@@ -582,7 +582,9 @@ return
 
   const filtered = products.filter(p => {
     const name = (currentLang==="ar" ? p.name_ar : p.name) || "";
-    const category = p.category || "";
+    const category = currentLang==="ar"
+  ? (p.category_ar || p.category || "")
+  : (p.category || "");
     const inSearch = !q || name.toLowerCase().includes(q) || (p.sku && p.sku.toLowerCase().includes(q));
     const inCat = !cat || category === cat;
     return inSearch && inCat;
@@ -912,10 +914,15 @@ const rate = getRate()
 const priceUSD = p.price ? Number(p.price) : null
 const priceLBP = priceUSD ? Math.round(priceUSD * rate).toLocaleString("en-LB") : null
 
-document.getElementById("modalTitle").textContent = p.name || ""
+document.getElementById("modalTitle").textContent =
+  currentLang==="ar"
+    ? (p.name_ar || p.name || "")
+    : (p.name || "");
 document.getElementById("modalImage").src = imagePath
-document.getElementById("modalDescription").textContent = p.description || ""
-
+document.getElementById("modalDescription").textContent =
+  currentLang==="ar"
+    ? (p.description_ar || p.description || "")
+    : (p.description || "");
 document.getElementById("modalPrice").textContent =
 priceUSD ? priceUSD + " USD (" + priceLBP + " LBP)" : ""
 

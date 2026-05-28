@@ -575,26 +575,55 @@ render()
 
 }
 function render(){
-if(document.getElementById("categoryGrid").style.display !== "none"){
-document.getElementById("grid").innerHTML=""
-return
-}
-  const grid = document.getElementById("grid");
-  const q = document.getElementById("search").value.toLowerCase().trim();
-  const cat = document.getElementById("filterCat").value;
-  const rate = getRate();
 
+const q = document.getElementById("search").value.toLowerCase().trim();
+const cat = document.getElementById("filterCat").value;
+
+if(
+  q === "" &&
+  cat === ""
+){
+  document.getElementById("categoryGrid").style.display = "grid";
+  document.getElementById("backBtn").style.display = "none";
+  document.getElementById("grid").innerHTML = "";
+  return;
+}
+
+if(q !== "" || cat !== ""){
+  document.getElementById("categoryGrid").style.display = "none";
+  document.getElementById("backBtn").style.display = "block";
+}
+
+const grid = document.getElementById("grid");
+const rate = getRate();
   grid.innerHTML = "";
 
   const filtered = products.filter(p => {
-    const name = (currentLang==="ar" ? p.name_ar : p.name) || "";
-    const category = currentLang==="ar"
-  ? (p.category_ar || p.category || "")
-  : (p.category || "");
-    const inSearch = !q || name.toLowerCase().includes(q) || (p.sku && p.sku.toLowerCase().includes(q));
-    const inCat = !cat || category === cat;
-    return inSearch && inCat;
-  });
+
+  const nameEn = (p.name || "").toLowerCase();
+  const nameAr = (p.name_ar || "").toLowerCase();
+
+  const descEn = (p.description || "").toLowerCase();
+  const descAr = (p.description_ar || "").toLowerCase();
+
+  const sku = (p.sku || "").toLowerCase();
+
+  const category = currentLang==="ar"
+    ? (p.category_ar || p.category || "")
+    : (p.category || "");
+
+  const inSearch =
+    !q ||
+    nameEn.includes(q) ||
+    nameAr.includes(q) ||
+    descEn.includes(q) ||
+    descAr.includes(q) ||
+    sku.includes(q);
+
+  const inCat = !cat || category === cat;
+
+  return inSearch && inCat;
+});
 
   filtered.forEach((p) => {
   const realIndex = products.indexOf(p);

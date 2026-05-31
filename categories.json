@@ -8,19 +8,23 @@
     "image": "cleaning-products.jpg"
   },
   {
-    "name": "CONTAINERS",
-    "image": "clear_containers_lid.jpg"
+    "name": "PLASTIC PRODUCTS",
+    "image": "plastic-products.png"
   },
   {
     "name": "ALUMINIUM PRODUCTS",
-    "image": "aluminium-products.jpg"
+    "image": "aluminium-products.png"
   },
   {
     "name": "FOAM PRODUCTS",
-    "image": "foam-products.jpg"
+    "image": "foam-products.png"
   },
   {
     "name": "KRAFT PRODUCTS",
-    "image": "kraft-products.jpg"
+    "image": "kraft-products.png"
+  },
+  {
+    "name": "FILM WRAPS",
+    "image": "film-wraps.png"
   }
 ]
